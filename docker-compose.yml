@@ -1,0 +1,28 @@
+version: "3"
+
+networks:
+  backbone:
+    external:
+      name: backbone
+
+services:
+  s3:
+    image: zenko/cloudserver:latest
+    networks:
+      - backbone
+    volumes:
+      - $PWD/data/s3:/data
+      - $PWD/config/s3/config.json:/usr/src/app/config.json
+    environment:
+      - VIRTUAL_HOST=s3.aws.develop
+      - VIRTUAL_PORT=8000
+      - S3DATAPATH=/data
+      - REMOTE_MANAGEMENT_DISABLE=1
+
+  dynamodb:
+      image: amazon/dynamodb-local
+      networks:
+        - backbone
+      environment:
+        - VIRTUAL_HOST=dynamodb.aws.develop
+        - VIRTUAL_PORT=8000
