@@ -36,19 +36,21 @@ services:
     volumes:
       - $PWD/data/sns:/srv/ruby/fake-sns
     environment:
-      - VIRTUAL_HOST=~^sns.([a-z0-9]+).aws.develop
+      - VIRTUAL_HOST=~^sns.([a-z0-9\-]+).aws.develop
       - VIRTUAL_PORT=9292
 
-# TODO: https://github.com/tierra/fake_sqs/tree/aws-sdk-v3
-#  sqs:
-#    image: christhomas/fake-sqs
-#    networks:
-#      - backbone
-#    environment:
-#      - VIRTUAL_HOST=~^sqs.([a-z0-9]+).aws.develop
+  # https://github.com/softwaremill/elasticmq
+  sqs:
+    image: softwaremill/elasticmq-native
+    ports:
+      - 9324
+    networks:
+      - backbone
+    environment:
+      - VIRTUAL_HOST=~^sqs.([a-z0-9\-]+).aws.develop
+      - VIRTUAL_PORT=9324
 
-# TODO: https://github.com/lambci/docker-lambda
-
-# TODO: https://medium.com/albert-franzi/accessing-s3-data-through-sql-with-presto-ddb6d4fbb99c
+  # TODO: https://github.com/lambci/docker-lambda
+  # TODO: https://medium.com/albert-franzi/accessing-s3-data-through-sql-with-presto-ddb6d4fbb99c
 
 
