@@ -50,6 +50,16 @@ services:
       - VIRTUAL_HOST=~^sqs.([a-z0-9\-]+).aws.develop
       - VIRTUAL_PORT=9324
 
+  # https://github.com/picadoh/motocker/blob/master/start.sh
+  iam:
+    image: picadoh/motocker
+    networks:
+      - backbone
+    environment:
+      - VIRTUAL_HOST=iam.aws.develop
+      - VIRTUAL_PORT=5000
+      - MOTO_SERVICE=iam
+
   # TODO: https://github.com/lambci/docker-lambda
   # TODO: https://medium.com/albert-franzi/accessing-s3-data-through-sql-with-presto-ddb6d4fbb99c
 
