@@ -11,6 +11,8 @@ There is a small user interface letting you inspect various aws components creat
 
 It's available using the "console" docker service, ```docker-compose up console``` to see it in action.
 
+![FakeWS Inspector Console](https://raw.githubusercontent.com/christhomas/fakews/master/fakews-console.png)
+
 ### Supported Services
 
 - S3: Provided by https://github.com/scality/cloudserver
