@@ -9,7 +9,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import LayersIcon from '@material-ui/icons/Layers';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 
-export const mainListItems = (
+export const ListItems = (
     <div>
         <ListItem button>
             <ListItemIcon>
