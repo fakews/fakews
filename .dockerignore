@@ -1,0 +1,6 @@
+build
+node_modules
+config
+data
+test
+docker-compose.yml

@@ -6,6 +6,14 @@ networks:
       name: backbone
 
 services:
+  console:
+    image: christhomas/fakews-console:latest
+    build: .
+    networks:
+      - backbone
+    environment:
+      - VIRTUAL_HOST=console.aws.develop
+
   # https://github.com/scality/cloudserver
   s3:
     image: zenko/cloudserver:latest
