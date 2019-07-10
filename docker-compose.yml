@@ -20,6 +20,7 @@ services:
       - S3DATAPATH=/data
       - REMOTE_MANAGEMENT_DISABLE=1
 
+  # https://hub.docker.com/r/amazon/dynamodb-local/
   dynamodb:
     image: amazon/dynamodb-local
     networks:
@@ -50,7 +51,7 @@ services:
       - VIRTUAL_HOST=~^sqs.([a-z0-9\-]+).aws.develop
       - VIRTUAL_PORT=9324
 
-  # https://github.com/picadoh/motocker/blob/master/start.sh
+  # https://github.com/picadoh/motocker
   iam:
     image: picadoh/motocker
     networks:
