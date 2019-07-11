@@ -20,3 +20,9 @@ It's available using the "console" docker service, ```docker-compose up console`
 - SNS: Provided by https://github.com/airdock-io/docker-fake-sns
 - DynamoDB: Provided by https://hub.docker.com/r/amazon/dynamodb-local/
 - IAM: Provided by https://github.com/picadoh/motocker
+
+### Could be interesting?
+
+I'm just going to drop some links here to keep track of things as I find them.
+
+- https://airbnb.io/airpal/
