@@ -50,12 +50,13 @@ services:
 
   # https://github.com/softwaremill/elasticmq
   sqs:
-    image: softwaremill/elasticmq-native
-    ports:
-      - 9324
+    image: softwaremill/elasticmq:0.14.7
     networks:
       - backbone
+    volumes:
+      - $PWD/config/sqs/custom.conf:/opt/elasticmq.conf
     environment:
+      - QUEUE_HOST=sqs.eu-west-1.aws.develop
       - VIRTUAL_HOST=~^sqs.([a-z0-9\-]+).aws.develop
       - VIRTUAL_PORT=9324
 
