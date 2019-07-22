@@ -8,7 +8,9 @@ networks:
 services:
   console:
     image: christhomas/fakews-console:latest
-    build: .
+    build:
+      context: console
+      dockerfile: Dockerfile
     networks:
       - backbone
     environment:
@@ -73,7 +75,7 @@ services:
 
   # https://github.com/picadoh/motocker
   iam:
-    image: picadoh/motocker
+    image: picadoh/motocker:latest
     networks:
       - backbone
     environment:
@@ -83,8 +85,8 @@ services:
 
 
   # https://github.com/picadoh/motocker
-  cloudwatch:
-    image: christhomas/motocker
+  cloudwatch_2:
+    image: christhomas/motocker:latest
     networks:
       - backbone
     environment:
