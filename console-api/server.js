@@ -18,7 +18,20 @@ app.use(function(req, res, next) {
 });
 
 app.get('/dynamodb/list-tables', (req, res) => {
-    res.send({ Buckets: [], NOT_IMPLEMENTED: true});
+    const credentials = getCredentials(req.query);
+    const region = req.query.aws_region;
+    const endpoint = 'http://' + req.query.aws_endpoint;
+
+    const dynamodb = new AWS.DynamoDB({
+        apiVersion: 'latest',
+        region: region,
+        endpoint: endpoint,
+        credentials
+    });
+
+    dynamodb.listTables((err, data) => {
+        res.send(data);
+    });
 });
 
 app.get('/iam/list-users', (req, res) => {
@@ -28,7 +41,7 @@ app.get('/iam/list-users', (req, res) => {
 app.get('/s3/list-buckets', (req, res) => {
     const credentials = getCredentials(req.query);
     const region = req.query.aws_region;
-    const endpoint = 'http://' + req.query.aws_s3_endpoint;
+    const endpoint = 'http://' + req.query.aws_endpoint;
 
     const s3 = new AWS.S3({
         apiVersion: 'latest',
@@ -42,12 +55,29 @@ app.get('/s3/list-buckets', (req, res) => {
     });
 });
 
-app.get('/sns/list-streams', (req, res) => {
+app.get('/sns/list-topics', (req, res) => {
+    res.send({ Buckets: [], NOT_IMPLEMENTED: true});
+});
+
+app.get('/sns/list-subscriptions', (req, res) => {
     res.send({ Buckets: [], NOT_IMPLEMENTED: true});
 });
 
 app.get('/sqs/list-queues', (req, res) => {
-    res.send({ Buckets: [], NOT_IMPLEMENTED: true});
+    const credentials = getCredentials(req.query);
+    const region = req.query.aws_region;
+    const endpoint = 'http://' + req.query.aws_endpoint;
+
+    const sqs = new AWS.SQS({
+        apiVersion: 'latest',
+        region: region,
+        endpoint: endpoint,
+        credentials
+    });
+
+    sqs.listQueues((err, data) => {
+        res.send(data);
+    });
 });
 
 app.listen(port, () => console.log(`AWS Console Proxy app listening on port ${port}!`));
