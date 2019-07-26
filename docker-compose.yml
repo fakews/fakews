@@ -29,6 +29,8 @@ services:
       - VIRTUAL_PORT=8000
       - S3DATAPATH=/data
       - REMOTE_MANAGEMENT_DISABLE=1
+      - SCALITY_ACCESS_KEY_ID=mock
+      - SCALITY_SECRET_ACCESS_KEY=mock
 
   # https://hub.docker.com/r/amazon/dynamodb-local/
   dynamodb:
