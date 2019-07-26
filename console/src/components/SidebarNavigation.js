@@ -15,11 +15,11 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import LayersIcon from '@material-ui/icons/Layers';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 
+import { getDynamoDBCount } from '../actions/dynamodb';
 import { getIAMUserCount } from '../actions/iam';
 import { getS3Count } from '../actions/s3';
 import { getSQSCount } from '../actions/sqs';
 import { getSNSCount } from '../actions/sns';
-import { getDynamoDBCount } from '../actions/dynamodb';
 
 const StyledBadge = withStyles(theme => ({
     badge: {
@@ -37,7 +37,11 @@ class SidebarNavigation extends Component {
     {
         super(props);
 
+        this.props.getDynamoDBCount();
+        this.props.getIAMUserCount();
         this.props.getS3Count();
+        this.props.getSNSCount();
+        this.props.getSQSCount();
     }
 
     render() {

@@ -1,6 +1,10 @@
+import RestClient from "../lib/RestClient";
+
 export const getIAMUserCount = () => dispatch => {
-    dispatch({
-        type: 'GET_IAM_USER_COUNT',
-        payload: 3
+    RestClient('/iam/list-users').then(r => {
+        dispatch({
+            type: 'GET_IAM_USER_COUNT',
+            payload: r.data.Buckets.length,
+        });
     });
-}
+};
