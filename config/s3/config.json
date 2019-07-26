@@ -3,7 +3,18 @@
   "listenOn": [],
   "replicationGroupId": "RG001",
   "restEndpoints": {
-    "s3.aws.develop": "us-east-1",
+    "s3.us-east-1.aws.develop": "us-east-1",
+    "s3.us-west-1.aws.develop": "us-west-1",
+    "s3.us-west-2.aws.develop": "us-west-2",
+
+    "s3.eu-west-1.aws.develop": "eu-west-1",
+    "s3.eu-central-1.aws.develop": "eu-central-1",
+
+    "s3.ap-northeast-1.aws.develop": "ap-northeast-1",
+    "s3.ap-northeast-2.aws.develop": "ap-northeast-2",
+    "s3.ap-southeast-1.aws.develop": "ap-southeast-1",
+    "s3.ap-southeast-2.aws.develop": "ap-southeast-2",
+
     "localhost": "us-east-1",
     "127.0.0.1": "us-east-1",
     "cloudserver-front": "us-east-1",
