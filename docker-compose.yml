@@ -11,10 +11,23 @@ services:
     build:
       context: console
       dockerfile: Dockerfile
+    depends_on:
+      - console-api
     networks:
       - backbone
     environment:
       - VIRTUAL_HOST=console.aws.develop
+      - CONSOLE_API=http://console-api.aws.develop
+
+  console-api:
+    image: christhomas/fakews-console-api:latest
+    build:
+      context: console-api
+      dockerfile: Dockerfile
+    networks:
+      - backbone
+    environment:
+      - VIRTUAL_HOST=console-api.aws.develop
 
   # https://github.com/scality/cloudserver
   s3:
