@@ -1,10 +1,12 @@
 import RestClient from "../lib/RestClient";
 
 export const getSQSCount = () => dispatch => {
-    RestClient('/sqs/list-queues').then(r => {
+    RestClient('sqs', 'eu-west-1', 'list-queues').then(r => {
+        let queues = r.data.QueueUrls || [];
+
         dispatch({
             type: 'GET_SQS_QUEUE_COUNT',
-            payload: r.data.Buckets.length,
+            payload: queues.length,
         });
     });
 };

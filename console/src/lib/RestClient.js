@@ -4,17 +4,17 @@ const getConsoleAPI = () => {
     return 'http://localhost:3001';
 };
 
-const getAWSHeaders = () => {
+const getAWSHeaders = (api, region) => {
     return [
         'aws_access_key_id=mock',
         'aws_secret_access_key=mock',
-        'aws_s3_endpoint=s3.aws.develop',
-        'region=eu-west-1',
+        `aws_region=${region}`,
+        `aws_endpoint=${api}.${region}.aws.develop`,
     ].join("&");
 };
 
-const RestClient = (url, method, data = {}) => {
-    const endpoint = getConsoleAPI() + url + '?' + getAWSHeaders();
+const RestClient = (api, region, url, method, data = {}) => {
+    const endpoint = `${getConsoleAPI()}/${api}/${url}?${getAWSHeaders(api, region)}`
 
     return axios(endpoint,{
         method: method,

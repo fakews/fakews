@@ -113,11 +113,11 @@ export default connect(
 
         return {
             notifications: 10,
-            iam: 3,
+            iam: state.iam.count,
             s3: state.s3.count,
-            sqs: 4,
-            sns: 2,
-            dynamodb: 5,
+            sqs: state.sqs.count,
+            sns: state.sns.count,
+            dynamodb: state.dynamodb.count,
         };
     },
     dispatch => ({

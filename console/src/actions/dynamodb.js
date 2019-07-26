@@ -1,11 +1,10 @@
 import RestClient from "../lib/RestClient";
 
 export const getDynamoDBCount = () => dispatch => {
-    RestClient('/dynamodb/list-tables').then(r => {
-        console.log(r);
+    RestClient('dynamodb', 'eu-west-1', 'list-tables').then(r => {
         dispatch({
             type: 'GET_DYNAMODB_COUNT',
-            payload: r.data.Buckets.length,
+            payload: r.data.TableNames.length,
         });
     });
 };
