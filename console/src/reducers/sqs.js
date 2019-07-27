@@ -6,6 +6,12 @@ export default (state = {}, action) => {
                 count: action.payload
             }
 
+        case 'GET_SQS_QUEUE_LIST':
+            return {
+                ...state,
+                list: action.payload
+            }
+
         default:
             return state
     }

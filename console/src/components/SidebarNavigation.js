@@ -19,7 +19,7 @@ import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 import { getDynamoDBCount } from '../actions/dynamodb';
 import { getIAMUserCount } from '../actions/iam';
 import { getS3BucketList } from '../actions/s3';
-import { getSQSCount } from '../actions/sqs';
+import { getSQSQueueList } from '../actions/sqs';
 import { getSNSCount } from '../actions/sns';
 
 const StyledBadge = withStyles(theme => ({
@@ -42,7 +42,7 @@ class SidebarNavigation extends Component {
         this.props.getIAMUserCount();
         this.props.getS3BucketList();
         this.props.getSNSCount();
-        this.props.getSQSCount();
+        this.props.getSQSQueueList();
     }
 
     render() {
@@ -123,7 +123,7 @@ export default connect(
         getNotifications: 0,
         getIAMUserCount: () => dispatch(getIAMUserCount()),
         getS3BucketList: () => dispatch(getS3BucketList()),
-        getSQSCount: () => dispatch(getSQSCount()),
+        getSQSQueueList: () => dispatch(getSQSQueueList()),
         getSNSCount: () => dispatch(getSNSCount()),
         getDynamoDBCount: () => dispatch(getDynamoDBCount()),
     })
