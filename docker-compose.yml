@@ -16,7 +16,7 @@ services:
     networks:
       - backbone
     environment:
-      - VIRTUAL_HOST=~^console.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=console.aws.develop
       - CONSOLE_API=http://console-api.aws.develop
 
   console-api:
