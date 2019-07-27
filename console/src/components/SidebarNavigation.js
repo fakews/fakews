@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import List from '@material-ui/core/List';
@@ -17,7 +18,7 @@ import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 
 import { getDynamoDBCount } from '../actions/dynamodb';
 import { getIAMUserCount } from '../actions/iam';
-import { getS3Count } from '../actions/s3';
+import { getS3BucketList } from '../actions/s3';
 import { getSQSCount } from '../actions/sqs';
 import { getSNSCount } from '../actions/sns';
 
@@ -39,7 +40,7 @@ class SidebarNavigation extends Component {
 
         this.props.getDynamoDBCount();
         this.props.getIAMUserCount();
-        this.props.getS3Count();
+        this.props.getS3BucketList();
         this.props.getSNSCount();
         this.props.getSQSCount();
     }
@@ -48,7 +49,7 @@ class SidebarNavigation extends Component {
         return (
             <List>
                 <nav>
-                    <ListItem button>
+                    <ListItem button component={Link} to="/">
                         <StyledBadge color="secondary" badgeContent={this.props.notifications}>
                             <ListItemIcon>
                                 <DashboardIcon />
@@ -57,7 +58,7 @@ class SidebarNavigation extends Component {
                         </StyledBadge>
                     </ListItem>
 
-                    <ListItem button>
+                    <ListItem button component={Link} to="/iam">
                         <StyledBadge color="secondary" badgeContent={this.props.iam}>
                             <ListItemIcon>
                                 <PeopleIcon />
@@ -66,7 +67,7 @@ class SidebarNavigation extends Component {
                         </StyledBadge>
                     </ListItem>
 
-                    <ListItem button>
+                    <ListItem button component={Link} to="/s3">
                         <StyledBadge color="secondary" badgeContent={this.props.s3}>
                             <ListItemIcon>
                                 <FileCopyIcon />
@@ -75,7 +76,7 @@ class SidebarNavigation extends Component {
                         </StyledBadge>
                     </ListItem>
 
-                    <ListItem button>
+                    <ListItem button component={Link} to="/sqs">
                         <StyledBadge color="secondary" badgeContent={this.props.sqs}>
                             <ListItemIcon>
                                 <FormatListNumberedIcon />
@@ -84,7 +85,7 @@ class SidebarNavigation extends Component {
                         </StyledBadge>
                     </ListItem>
 
-                    <ListItem button>
+                    <ListItem button component={Link} to="/sns">
                         <StyledBadge color="secondary" badgeContent={this.props.sns}>
                             <ListItemIcon>
                                 <NotificationsIcon />
@@ -93,7 +94,7 @@ class SidebarNavigation extends Component {
                         </StyledBadge>
                     </ListItem>
 
-                    <ListItem button>
+                    <ListItem button component={Link} to="/dynamodb">
                         <StyledBadge color="secondary" badgeContent={this.props.dynamodb}>
                             <ListItemIcon>
                                 <LayersIcon />
@@ -109,8 +110,6 @@ class SidebarNavigation extends Component {
 
 export default connect(
     state => {
-        console.log(state);
-
         return {
             notifications: 10,
             iam: state.iam.count,
@@ -123,7 +122,7 @@ export default connect(
     dispatch => ({
         getNotifications: 0,
         getIAMUserCount: () => dispatch(getIAMUserCount()),
-        getS3Count: () => dispatch(getS3Count()),
+        getS3BucketList: () => dispatch(getS3BucketList()),
         getSQSCount: () => dispatch(getSQSCount()),
         getSNSCount: () => dispatch(getSNSCount()),
         getDynamoDBCount: () => dispatch(getDynamoDBCount()),

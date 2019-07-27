@@ -14,7 +14,6 @@ import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 
 // Icons
 import MenuIcon from '@material-ui/icons/Menu';
@@ -22,8 +21,11 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
 // Custom Components
-import SidebarNavigation from './components/SidebarNavigation';
-import { MadeWithLove } from './components/MadeWithLove';
+import SidebarNavigation from '../components/SidebarNavigation';
+import { MadeWithLove } from '../components/MadeWithLove';
+
+// Router
+import { withRouter } from 'react-router-dom'
 
 const drawerWidth = 240;
 
@@ -106,70 +108,74 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Dashboard() {
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+const withDashboard = MainComponent => {
+  const Dashboard = () => {
+    const classes = useStyles();
+    const [open, setOpen] = React.useState(true);
+    const handleDrawerOpen = () => {
+      setOpen(true);
+    };
+    const handleDrawerClose = () => {
+      setOpen(false);
+    };
 
-  return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="Open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+    return (
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+            <Toolbar className={classes.toolbar}>
+              <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="Open drawer"
+                  onClick={handleDrawerOpen}
+                  className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+                FakeWS: Inspector
+              </Typography>
+              <IconButton color="inherit">
+                <Badge badgeContent={4} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+
+          <Drawer
+              variant="permanent"
+              classes={{
+                paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+              }}
+              open={open}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            FakeWS: Inspector
-          </Typography>
-          <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
+            <div className={classes.toolbarIcon}>
+              <IconButton onClick={handleDrawerClose}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </div>
+            <Divider />
+            <SidebarNavigation />
+          </Drawer>
+
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+            <Container maxWidth="lg" className={classes.container}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={12} lg={12}>
+                  <MainComponent />
+                </Grid>
+              </Grid>
+            </Container>
+            <MadeWithLove />
+          </main>
         </div>
-        <Divider />
-        <SidebarNavigation />
-      </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={12} lg={12}>
-              <Paper className={fixedHeightPaper}>
-                <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>Recent Activity</Typography>
-              </Paper>
-            </Grid>
-          </Grid>
-        </Container>
-        {MadeWithLove}
-      </main>
-    </div>
-  );
+    );
+  }
+
+  return withRouter(Dashboard);
 }
+
+export default withDashboard;
