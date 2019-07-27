@@ -54,16 +54,16 @@ services:
       - VIRTUAL_HOST=~^dynamodb.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
       - VIRTUAL_PORT=8000
 
-  # https://github.com/airdock-io/docker-fake-sns
+  # https://github.com/s12v/sns
   sns:
-    image: airdock/fake-sns
+    image: s12v/sns
     networks:
       - backbone
     volumes:
-      - $PWD/data/sns:/srv/ruby/fake-sns
+      - $PWD/data/sns:/etc/sns
     environment:
       - VIRTUAL_HOST=~^sns.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
-      - VIRTUAL_PORT=9292
+      - VIRTUAL_PORT=9911
 
   # https://github.com/softwaremill/elasticmq
   sqs:
