@@ -1,25 +1,25 @@
 import React, {Component} from 'react';
 
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import PeopleIcon from '@material-ui/icons/People';
 
 import {connect} from 'react-redux';
-import {getSQSQueueList} from '../actions/sqs';
+import {getIAMUserList} from '../actions/iam';
 
-class SQSQueueList extends Component {
+class IAMUserList extends Component {
     constructor(props) {
         super(props);
 
-        this.props.getSQSQueueList();
+        this.props.getIAMUserList();
     }
 
     renderItem (item) {
         return (
-            <ListItem key={`sqs-queue-${item.Name}`}>
+            <ListItem key={`iam-${item.Name}`}>
                 <ListItemIcon>
-                    <FormatListNumberedIcon />
+                    <PeopleIcon />
                 </ListItemIcon>
-                <ListItemText primary={item.Name} secondary={item.Url} />
+                <ListItemText primary={item.UserName} secondary={`UserId: ${item.UserId}`}/>
             </ListItem>
         )
     }
@@ -48,13 +48,13 @@ export default connect(
     state => {
         let props = {list: []};
 
-        if(typeof(state.sqs.list) !== 'undefined'){
-            props.list = state.sqs.list;
+        if(typeof(state.iam.list) !== 'undefined'){
+            props.list = state.iam.list;
         }
 
         return props;
     },
     dispatch => ({
-        getSQSQueueList: () => dispatch(getSQSQueueList()),
+        getIAMUserList: () => dispatch(getIAMUserList()),
     })
-)(SQSQueueList);
+)(IAMUserList);

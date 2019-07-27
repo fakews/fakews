@@ -35,7 +35,20 @@ app.get('/dynamodb/list-tables', (req, res) => {
 });
 
 app.get('/iam/list-users', (req, res) => {
-    res.send({ Buckets: [], NOT_IMPLEMENTED: true});
+    const credentials = getCredentials(req.query);
+    const region = req.query.aws_region;
+    const endpoint = 'http://' + req.query.aws_endpoint;
+
+    const iam = new AWS.IAM({
+        apiVersion: 'latest',
+        region: region,
+        endpoint: endpoint,
+        credentials
+    });
+
+    iam.listUsers((err, data) => {
+        res.send(data);
+    });
 });
 
 app.get('/s3/list-buckets', (req, res) => {

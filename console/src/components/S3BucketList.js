@@ -13,9 +13,9 @@ class S3BucketList extends Component {
         this.props.getS3BucketList();
     }
 
-    renderBucketItem (item) {
+    renderItem (item) {
         return (
-            <ListItem key={"bucket"-item.Name}>
+            <ListItem key={`s3-bucket-${item.Name}`}>
                 <ListItemIcon>
                     <SdStorageIcon />
                 </ListItemIcon>
@@ -24,10 +24,21 @@ class S3BucketList extends Component {
         )
     }
 
+    renderEmpty (list) {
+        if(list.length > 0) return;
+
+        return (
+            <ListItem key={'empty-list'}>
+                <ListItemText primary="There are no entries in the list" />
+            </ListItem>
+        )
+    }
+
     render () {
         return (
             <List>
-                { this.props.list.map(v => this.renderBucketItem(v)) }
+                { this.props.list.map(v => this.renderItem(v)) }
+                { this.renderEmpty(this.props.list) }
             </List>
         )
     }

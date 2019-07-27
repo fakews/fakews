@@ -1,25 +1,25 @@
 import React, {Component} from 'react';
 
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
+import LayersIcon from '@material-ui/icons/Layers';
 
 import {connect} from 'react-redux';
-import {getSQSQueueList} from '../actions/sqs';
+import {getDynamoDBList} from '../actions/dynamodb';
 
-class SQSQueueList extends Component {
+class DynamoDBList extends Component {
     constructor(props) {
         super(props);
 
-        this.props.getSQSQueueList();
+        this.props.getDynamoDBList();
     }
 
     renderItem (item) {
         return (
-            <ListItem key={`sqs-queue-${item.Name}`}>
+            <ListItem key={`dynamodb-item-${item}`}>
                 <ListItemIcon>
-                    <FormatListNumberedIcon />
+                    <LayersIcon />
                 </ListItemIcon>
-                <ListItemText primary={item.Name} secondary={item.Url} />
+                <ListItemText primary={item} />
             </ListItem>
         )
     }
@@ -48,13 +48,13 @@ export default connect(
     state => {
         let props = {list: []};
 
-        if(typeof(state.sqs.list) !== 'undefined'){
-            props.list = state.sqs.list;
+        if(typeof(state.dynamodb.list) !== 'undefined'){
+            props.list = state.dynamodb.list;
         }
 
         return props;
     },
     dispatch => ({
-        getSQSQueueList: () => dispatch(getSQSQueueList()),
+        getDynamoDBList: () => dispatch(getDynamoDBList()),
     })
-)(SQSQueueList);
+)(DynamoDBList);

@@ -16,8 +16,9 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import LayersIcon from '@material-ui/icons/Layers';
 import FormatListNumberedIcon from '@material-ui/icons/FormatListNumbered';
 
-import { getDynamoDBCount } from '../actions/dynamodb';
-import { getIAMUserCount } from '../actions/iam';
+import { getNotificationList } from '../actions/notifications';
+import { getDynamoDBList } from '../actions/dynamodb';
+import { getIAMUserList } from '../actions/iam';
 import { getS3BucketList } from '../actions/s3';
 import { getSQSQueueList } from '../actions/sqs';
 import { getSNSCount } from '../actions/sns';
@@ -38,8 +39,9 @@ class SidebarNavigation extends Component {
     {
         super(props);
 
-        this.props.getDynamoDBCount();
-        this.props.getIAMUserCount();
+        this.props.getNotificationList();
+        this.props.getDynamoDBList();
+        this.props.getIAMUserList();
         this.props.getS3BucketList();
         this.props.getSNSCount();
         this.props.getSQSQueueList();
@@ -111,7 +113,7 @@ class SidebarNavigation extends Component {
 export default connect(
     state => {
         return {
-            notifications: 10,
+            //notifications: state.notifications.count,
             iam: state.iam.count,
             s3: state.s3.count,
             sqs: state.sqs.count,
@@ -120,11 +122,11 @@ export default connect(
         };
     },
     dispatch => ({
-        getNotifications: 0,
-        getIAMUserCount: () => dispatch(getIAMUserCount()),
+        getNotificationList: () => dispatch(getNotificationList()),
+        getIAMUserList: () => dispatch(getIAMUserList()),
         getS3BucketList: () => dispatch(getS3BucketList()),
         getSQSQueueList: () => dispatch(getSQSQueueList()),
         getSNSCount: () => dispatch(getSNSCount()),
-        getDynamoDBCount: () => dispatch(getDynamoDBCount()),
+        getDynamoDBList: () => dispatch(getDynamoDBList()),
     })
 )(SidebarNavigation);
