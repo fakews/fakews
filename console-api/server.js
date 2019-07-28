@@ -72,8 +72,13 @@ app.get('/s3/list-buckets', (req, res) => {
     s3.listBuckets((err, data) => {
         if(err){
             console.log({url: req.url, message: err.message, code: err.code});
-            res.status(err.code);
-            res.send(err);
+            if(err.code === "XMLParserError"){
+                res.status(500);
+                res.send(err.message);
+            }else{
+                res.status(err.code);
+                res.send(err);
+            }
         }else{
             res.send(data);
         }
