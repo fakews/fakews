@@ -9,17 +9,23 @@ It's not guaranteed in any way that the services here are 100% compatible with A
 
 There is a small user interface letting you inspect various aws components created and maintained. But it's extremely limited and it's mainly for inspecting data and not doing anything fancy.
 
-It's available using the "console" docker service, ```docker-compose up console``` to see it in action.
+It's available using the "console" docker service, ```docker-compose up console``` to see it in action. It will launch a console-api container with an express app to proxy requests to the AWS services, sidestepping the CORS problem that some services have (S3 can't list buckets for example).
 
-![FakeWS Inspector Console](https://raw.githubusercontent.com/christhomas/fakews/master/fakews-console.png)
+![FakeWS Inspector Console](fakews-console.png)
 
-### Supported Services
+### Supported Services and Functionality
 
-- S3: Provided by https://github.com/scality/cloudserver
-- SQS: Provided by https://github.com/softwaremill/elasticmq
-- SNS: Provided by https://github.com/airdock-io/docker-fake-sns
-- DynamoDB: Provided by https://hub.docker.com/r/amazon/dynamodb-local/
 - IAM: Provided by https://github.com/picadoh/motocker
+    - List Users
+- S3: Provided by https://github.com/scality/cloudserver
+    - List Buckets
+- SQS: Provided by https://github.com/softwaremill/elasticmq
+    - List Queues
+- SNS: Provided by https://github.com/s12v/sns
+    - List Topics
+    - List Subscriptions
+- DynamoDB: Provided by https://hub.docker.com/r/amazon/dynamodb-local/
+    - List Tables
 
 ### Could be interesting?
 
