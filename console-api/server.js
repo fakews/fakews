@@ -47,7 +47,13 @@ app.get('/iam/list-users', (req, res) => {
     });
 
     iam.listUsers((err, data) => {
-        res.send(data);
+        if(err){
+            console.log({url: req.url, message: err.message, code: err.code});
+            res.status(err.code);
+            res.send(err);
+        }else{
+            res.send(data);
+        }
     });
 });
 
@@ -64,7 +70,13 @@ app.get('/s3/list-buckets', (req, res) => {
     });
 
     s3.listBuckets((err, data) => {
-        res.send(data);
+        if(err){
+            console.log({url: req.url, message: err.message, code: err.code});
+            res.status(err.code);
+            res.send(err);
+        }else{
+            res.send(data);
+        }
     });
 });
 
@@ -81,7 +93,13 @@ app.get('/sns/list-topics', (req, res) => {
     });
 
     sns.listTopics((err, data) => {
-        res.send(data);
+        if(err){
+            console.log({url: req.url, message: err.message, code: err.code});
+            res.status(err.code);
+            res.send(err);
+        }else{
+            res.send(data);
+        }
     });
 });
 
@@ -98,7 +116,13 @@ app.get('/sns/list-subscriptions', (req, res) => {
     });
 
     sns.listSubscriptions((err, data) => {
-        res.send(data);
+        if(err){
+            console.log({url: req.url, message: err.message, code: err.code});
+            res.status(err.code);
+            res.send(err);
+        }else{
+            res.send(data);
+        }
     });
 });
 
@@ -115,7 +139,13 @@ app.get('/sqs/list-queues', (req, res) => {
     });
 
     sqs.listQueues((err, data) => {
-        res.send(data);
+        if(err){
+            console.log({url: req.url, message: err.message, code: err.code});
+            res.status(err.code);
+            res.send(err);
+        }else{
+            res.send(data);
+        }
     });
 });
 
