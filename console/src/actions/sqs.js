@@ -20,5 +20,10 @@ export const getSQSQueueList = () => dispatch => {
             type: 'GET_SQS_QUEUE_LIST',
             payload: queues,
         });
+    }).catch(e => {
+        dispatch({
+            type: 'SERVICE_OFFLINE',
+            payload: 'sqs'
+        });
     });
 };

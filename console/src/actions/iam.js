@@ -11,5 +11,10 @@ export const getIAMUserList = () => dispatch => {
             type: 'GET_IAM_USER_LIST',
             payload: r.data.Users,
         });
+    }).catch(e => {
+        dispatch({
+            type: 'SERVICE_OFFLINE',
+            payload: 'iam'
+        });
     });
 };

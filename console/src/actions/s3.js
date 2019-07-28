@@ -11,5 +11,10 @@ export const getS3BucketList = () => dispatch => {
             type: 'GET_S3_BUCKET_LIST',
             payload: r.data.Buckets,
         });
+    }).catch(e => {
+        dispatch({
+            type: 'SERVICE_OFFLINE',
+            payload: 's3'
+        });
     });
 }

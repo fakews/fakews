@@ -11,6 +11,11 @@ export const getSNSTopicList = () => dispatch => {
             type: 'GET_SNS_TOPICS_LIST',
             payload: r.data.Topics,
         });
+    }).catch(e => {
+        dispatch({
+            type: 'SERVICE_OFFLINE',
+            payload: 'sns'
+        });
     });
 };
 
@@ -24,6 +29,11 @@ export const getSNSSubscriptionList = () => dispatch => {
         dispatch({
             type: 'GET_SNS_SUBSCRIPTIONS_LIST',
             payload: r.data.Subscriptions,
+        });
+    }).catch(e => {
+        dispatch({
+            type: 'SERVICE_OFFLINE',
+            payload: 'sns'
         });
     });
 };
