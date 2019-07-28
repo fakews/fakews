@@ -17,6 +17,9 @@ export default (state = {}, action) => {
         case 'GET_SNS_SUBSCRIPTIONS_LIST':
             copy.subscriptions.list = action.payload;
             break;
+
+        default:
+            return state;
     }
 
     return copy;
