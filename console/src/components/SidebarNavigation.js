@@ -21,7 +21,7 @@ import { getDynamoDBList } from '../actions/dynamodb';
 import { getIAMUserList } from '../actions/iam';
 import { getS3BucketList } from '../actions/s3';
 import { getSQSQueueList } from '../actions/sqs';
-import { getSNSCount } from '../actions/sns';
+import { getSNSTopicList } from '../actions/sns';
 
 const StyledBadge = withStyles(theme => ({
     badge: {
@@ -43,7 +43,7 @@ class SidebarNavigation extends Component {
         this.props.getDynamoDBList();
         this.props.getIAMUserList();
         this.props.getS3BucketList();
-        this.props.getSNSCount();
+        this.props.getSNSTopicList();
         this.props.getSQSQueueList();
     }
 
@@ -112,21 +112,47 @@ class SidebarNavigation extends Component {
 
 export default connect(
     state => {
-        return {
-            //notifications: state.notifications.count,
-            iam: state.iam.count,
-            s3: state.s3.count,
-            sqs: state.sqs.count,
-            sns: state.sns.count,
-            dynamodb: state.dynamodb.count,
+        let props = {
+            notifications: 0,
+            iam: 0,
+            s3: 0,
+            sqs: 0,
+            sns: 0,
+            dynamodb: 0,
         };
+
+        if(typeof(state.notifications) !== 'undefined'){
+            props.notifications = state.notifications.count;
+        }
+
+        if(typeof(state.iam) !== 'undefined'){
+            props.iam = state.iam.count;
+        }
+
+        if(typeof(state.s3) !== 'undefined'){
+            props.s3 = state.s3.count;
+        }
+
+        if(typeof(state.sqs) !== 'undefined'){
+            props.sqs = state.sqs.count;
+        }
+
+        if(typeof(state.sns.topics) !== 'undefined'){
+            props.sns = state.sns.topics.count;
+        }
+
+        if(typeof(state.dynamodb) !== 'undefined'){
+            props.dynamodb = state.dynamodb.count;
+        }
+
+        return props;
     },
     dispatch => ({
         getNotificationList: () => dispatch(getNotificationList()),
         getIAMUserList: () => dispatch(getIAMUserList()),
         getS3BucketList: () => dispatch(getS3BucketList()),
         getSQSQueueList: () => dispatch(getSQSQueueList()),
-        getSNSCount: () => dispatch(getSNSCount()),
+        getSNSTopicList: () => dispatch(getSNSTopicList()),
         getDynamoDBList: () => dispatch(getDynamoDBList()),
     })
 )(SidebarNavigation);

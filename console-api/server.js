@@ -69,11 +69,37 @@ app.get('/s3/list-buckets', (req, res) => {
 });
 
 app.get('/sns/list-topics', (req, res) => {
-    res.send({ Buckets: [], NOT_IMPLEMENTED: true});
+    const credentials = getCredentials(req.query);
+    const region = req.query.aws_region;
+    const endpoint = 'http://' + req.query.aws_endpoint;
+
+    const sns = new AWS.SNS({
+        apiVersion: 'latest',
+        region: region,
+        endpoint: endpoint,
+        credentials
+    });
+
+    sns.listTopics((err, data) => {
+        res.send(data);
+    });
 });
 
 app.get('/sns/list-subscriptions', (req, res) => {
-    res.send({ Buckets: [], NOT_IMPLEMENTED: true});
+    const credentials = getCredentials(req.query);
+    const region = req.query.aws_region;
+    const endpoint = 'http://' + req.query.aws_endpoint;
+
+    const sns = new AWS.SNS({
+        apiVersion: 'latest',
+        region: region,
+        endpoint: endpoint,
+        credentials
+    });
+
+    sns.listSubscriptions((err, data) => {
+        res.send(data);
+    });
 });
 
 app.get('/sqs/list-queues', (req, res) => {
