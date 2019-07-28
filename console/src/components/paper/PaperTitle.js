@@ -1,12 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
+import { Grid, Button, Typography } from '@material-ui/core';
+import {Link} from "react-router-dom";
 
 export default function PaperTitle(props) {
     return (
-        <Typography component="h2" variant="h6" color="primary" gutterBottom>
-            {props.children}
-        </Typography>
+        <Grid container direction="row" justify="space-between">
+            <Grid item>
+                <Typography component="h2" variant="h6" color="primary" gutterBottom>
+                    {props.children}
+                </Typography>
+            </Grid>
+            <Grid item>
+                <Button variant="contained" color="primary" component={Link} to="/iam/create">create</Button>
+            </Grid>
+        </Grid>
     );
 }
 
