@@ -1,6 +1,7 @@
 const helmet = require('helmet');
 const AWS = require('aws-sdk');
 const express = require('express');
+const bodyParser = require("body-parser");
 const app = express();
 const port = 3001;
 
@@ -10,6 +11,8 @@ function getCredentials(query)
 }
 
 app.use(helmet());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -50,6 +53,31 @@ app.get('/iam/list-users', (req, res) => {
         if(err){
             console.log({url: req.url, message: err.message, code: err.code});
             res.status(err.code);
+            res.send(err);
+        }else{
+            res.send(data);
+        }
+    });
+});
+
+app.post('/iam/create-user', (req, res) => {
+    const credentials = getCredentials(req.query);
+    const region = req.query.aws_region;
+    const endpoint = 'http://' + req.query.aws_endpoint;
+
+    const iam = new AWS.IAM({
+        apiVersion: 'latest',
+        region: region,
+        endpoint: endpoint,
+        credentials
+    });
+
+    iam.createUser({
+        UserName: req.body.username
+    },(err, data) => {
+        if(err){
+            console.log({url: req.url, message: err.message, code: err.code});
+            res.status(400);
             res.send(err);
         }else{
             res.send(data);

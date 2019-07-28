@@ -13,7 +13,7 @@ const getAWSHeaders = (api, region) => {
     ].join("&");
 };
 
-const RestClient = (api, region, url, method, data = {}) => {
+const RestClient = (api, region, url, method = 'GET', data = {}) => {
     const endpoint = `${getConsoleAPI()}/${api}/${url}?${getAWSHeaders(api, region)}`
 
     return axios(endpoint,{

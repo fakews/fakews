@@ -1,5 +1,5 @@
 import React from 'react';
-import withDashboard from './Dashboard';
+import withDashboard from '../layouts/Dashboard';
 
 const Home = () => <div>Home Page</div>;
 

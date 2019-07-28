@@ -1,10 +1,14 @@
 import React, {Component} from 'react';
 
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import PeopleIcon from '@material-ui/icons/People';
 
 import {connect} from 'react-redux';
 import {getIAMUserList} from '../actions/iam';
+import PaperBody from './paper/PaperBody';
+import PaperTitle from './paper/PaperTitle';
+import {Link} from "react-router-dom";
 
 class IAMUserList extends Component {
     constructor(props) {
@@ -36,10 +40,14 @@ class IAMUserList extends Component {
 
     render () {
         return (
-            <List>
-                { this.props.list.map(v => this.renderItem(v)) }
-                { this.renderEmpty(this.props.list) }
-            </List>
+            <PaperBody>
+                <PaperTitle>IAM User List</PaperTitle>
+                <List>
+                    { this.props.list.map(v => this.renderItem(v)) }
+                    { this.renderEmpty(this.props.list) }
+                </List>
+                <Button variant="contained" color="primary" component={Link} to="/iam/create">create</Button>
+            </PaperBody>
         )
     }
 }

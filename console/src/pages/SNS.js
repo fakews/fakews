@@ -1,5 +1,5 @@
 import React from 'react';
-import withDashboard from './Dashboard';
+import withDashboard from '../layouts/Dashboard';
 
 import { Grid } from '@material-ui/core';
 import PaperBody from '../components/paper/PaperBody';

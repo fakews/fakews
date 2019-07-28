@@ -1,19 +1,19 @@
 import React from 'react';
-import withDashboard from './Dashboard';
+import withDashboard from '../layouts/Dashboard';
 
 import { Grid } from '@material-ui/core';
 import PaperBody from '../components/paper/PaperBody';
 import PaperTitle from '../components/paper/PaperTitle';
 
-import IAMUserList from '../components/IAMUserList';
+import SQSQueueList from '../components/SQSQueueList';
 
-const IAM = () => (
+const SQS = () => (
     <Grid item xs={12}>
         <PaperBody>
-            <PaperTitle>IAM User List</PaperTitle>
-            <IAMUserList />
+            <PaperTitle>SQS Queue List</PaperTitle>
+            <SQSQueueList />
         </PaperBody>
     </Grid>
 )
 
-export default withDashboard(IAM);
+export default withDashboard(SQS);

@@ -1,19 +1,19 @@
 import React from 'react';
-import withDashboard from './Dashboard';
+import withDashboard from '../layouts/Dashboard';
 
 import { Grid } from '@material-ui/core';
 import PaperBody from '../components/paper/PaperBody';
 import PaperTitle from '../components/paper/PaperTitle';
 
-import SQSQueueList from '../components/SQSQueueList';
+import DynamoDBList from '../components/DynamoDBList';
 
-const SQS = () => (
+const DynamoDB = () => (
     <Grid item xs={12}>
         <PaperBody>
-            <PaperTitle>SQS Queue List</PaperTitle>
-            <SQSQueueList />
+            <PaperTitle>DynamoDB List</PaperTitle>
+            <DynamoDBList />
         </PaperBody>
     </Grid>
 )
 
-export default withDashboard(SQS);
+export default withDashboard(DynamoDB);
