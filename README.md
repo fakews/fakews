@@ -18,10 +18,12 @@ It's available using the "console" docker service, ```docker-compose up console`
 - IAM: Provided by https://github.com/picadoh/motocker
     - List Users
 - S3: Provided by https://github.com/scality/cloudserver
+    - Persists data to disk (unknown how much)
     - List Buckets
 - SQS: Provided by https://github.com/softwaremill/elasticmq
     - List Queues
 - SNS: Provided by https://github.com/s12v/sns
+    - Persists data to disk (unknown how much)
     - List Topics
     - List Subscriptions
 - DynamoDB: Provided by https://hub.docker.com/r/amazon/dynamodb-local/
