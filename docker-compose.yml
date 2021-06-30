@@ -28,21 +28,19 @@ services:
     environment:
       - VIRTUAL_HOST=console-api.aws.develop
 
-  # https://github.com/scality/cloudserver
+  # https://github.com/minio/minio
   s3:
-    image: zenko/cloudserver:latest
+    image: minio/minio:edge
+    command: server /data --json
     networks:
       - fakews
     volumes:
       - $PWD/data/s3:/data
-      - $PWD/config/s3/config.json:/usr/src/app/config.json
     environment:
       - VIRTUAL_HOST=~^(|[a-z0-9]+\.)s3.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
-      - VIRTUAL_PORT=8000
-      - S3DATAPATH=/data
-      - REMOTE_MANAGEMENT_DISABLE=1
-      - SCALITY_ACCESS_KEY_ID=mock
-      - SCALITY_SECRET_ACCESS_KEY=mock
+      - VIRTUAL_PORT=9000
+      - MINIO_ROOT_USER=fakewsrootuser
+      - MINIO_ROOT_PASSWORD=fakewsrootpassword
 
   # https://hub.docker.com/r/amazon/dynamodb-local/
   dynamodb:
