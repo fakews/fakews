@@ -1,9 +1,8 @@
 version: "3"
 
 networks:
-  backbone:
-    external:
-      name: backbone
+  fakews:
+      name: ${FAKEWS_NETWORK:-fakews}
 
 services:
   console:
@@ -14,7 +13,7 @@ services:
     depends_on:
       - console-api
     networks:
-      - backbone
+      - fakews
     environment:
       - VIRTUAL_HOST=console.aws.develop
       - CONSOLE_API=http://console-api.aws.develop
@@ -25,7 +24,7 @@ services:
       context: console-api
       dockerfile: Dockerfile
     networks:
-      - backbone
+      - fakews
     environment:
       - VIRTUAL_HOST=console-api.aws.develop
 
@@ -33,7 +32,7 @@ services:
   s3:
     image: zenko/cloudserver:latest
     networks:
-      - backbone
+      - fakews
     volumes:
       - $PWD/data/s3:/data
       - $PWD/config/s3/config.json:/usr/src/app/config.json
@@ -49,7 +48,7 @@ services:
   dynamodb:
     image: amazon/dynamodb-local
     networks:
-      - backbone
+      - fakews
     environment:
       - VIRTUAL_HOST=~^dynamodb.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
       - VIRTUAL_PORT=8000
@@ -58,7 +57,7 @@ services:
   sns:
     image: s12v/sns
     networks:
-      - backbone
+      - fakews
     volumes:
       - $PWD/data/sns:/etc/sns
     environment:
@@ -69,7 +68,7 @@ services:
   sqs:
     image: softwaremill/elasticmq:latest
     networks:
-      - backbone
+      - fakews
     volumes:
       - $PWD/config/sqs/custom.conf:/opt/elasticmq.conf
     environment:
@@ -92,7 +91,7 @@ services:
   iam:
     image: picadoh/motocker:latest
     networks:
-      - backbone
+      - fakews
     environment:
       - VIRTUAL_HOST=~^iam.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
       - VIRTUAL_PORT=5000
@@ -103,7 +102,7 @@ services:
   cloudwatch:
     image: christhomas/motocker:latest
     networks:
-      - backbone
+      - fakews
     environment:
       - VIRTUAL_HOST=~^logs.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
       - VIRTUAL_PORT=5000
@@ -111,5 +110,3 @@ services:
 
   # TODO: https://github.com/lambci/docker-lambda
   # TODO: https://medium.com/albert-franzi/accessing-s3-data-through-sql-with-presto-ddb6d4fbb99c
-
-
