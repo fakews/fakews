@@ -18,9 +18,10 @@ It's available using the "console" docker service, ```docker-compose up console`
 - IAM: Provided by https://github.com/picadoh/motocker
     - List Users
     - Create Users
-- S3: Provided by https://github.com/scality/cloudserver
+- S3: Provided by https://github.com/minio/minio
     - Persists data to disk (unknown how much)
     - List Buckets
+    - Supports a GUI Console service "s3-console" which starts a web console on http://minio.aws.develop
 - SQS: Provided by https://github.com/softwaremill/elasticmq
     - List Queues
 - SNS: Provided by https://github.com/s12v/sns
