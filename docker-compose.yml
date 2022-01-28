@@ -2,7 +2,7 @@ version: "3"
 
 networks:
   fakews:
-      name: ${FAKEWS_NETWORK:-fakews}
+    name: ${FAKEWS_NETWORK:-fakews}
 
 services:
   console:
@@ -28,20 +28,49 @@ services:
     environment:
       - VIRTUAL_HOST=console-api.aws.develop
 
+  # Local S3 using Minio S3 Implementation
+  # This is split into two parts, the api and the gui console
   # https://github.com/minio/minio
   s3:
-    image: minio/minio:edge
+    image: minio/minio:latest
     command: server /data --json
     networks:
       - fakews
     volumes:
       - $PWD/data/s3:/data
     environment:
-      - VIRTUAL_HOST=~^(|[a-z0-9]+\.)s3.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=~^(|[a-z0-9\-]+\.)s3.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
       - VIRTUAL_PORT=9000
       - MINIO_ROOT_USER=fakewsrootuser
       - MINIO_ROOT_PASSWORD=fakewsrootpassword
+      - MINIO_HTTP_TRACE=true
 
+  # The GUI Console for the Minio S3 Implementation 
+  s3-console:
+    image: minio/console:latest
+    command: server
+    depends_on:
+      - s3-dev
+    networks:
+      - fakews
+    environment:
+      - VIRTUAL_HOST=minio.aws.develop
+      - CONSOLE_MINIO_SERVER=http://s3.eu-west-1.aws.develop
+
+  # Local AWS Cognito Implementation
+  # https://github.com/jagregory/cognito-local  
+  cognito:
+    image: jagregory/cognito-local:latest
+    networks:
+      - fakews
+    volumes:
+      - $PWD/data/cognito:/app/.cognito
+    environment:
+      - VIRTUAL_HOST=~cognito-idp.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_PORT=9229
+      - DEBUG=1
+
+  # Official Local AWS DynamoDB Implementation
   # https://hub.docker.com/r/amazon/dynamodb-local/
   dynamodb:
     image: amazon/dynamodb-local
