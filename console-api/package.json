@@ -1,5 +1,5 @@
 {
-  "name": "fakews-inspector-console-api",
+  "name": "fakews-console-api",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
