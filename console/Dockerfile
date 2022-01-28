@@ -1,5 +1,5 @@
 ## Build application
-FROM node as build
+FROM node:16 as build
 COPY . /app
 WORKDIR /app
 RUN yarn install && yarn build
