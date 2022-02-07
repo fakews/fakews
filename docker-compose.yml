@@ -50,7 +50,7 @@ services:
     image: minio/console:latest
     command: server
     depends_on:
-      - s3-dev
+      - s3
     networks:
       - fakews
     environment:
