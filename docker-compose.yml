@@ -58,7 +58,7 @@ services:
       - CONSOLE_MINIO_SERVER=http://s3.eu-west-1.aws.develop
 
   # Local AWS Cognito Implementation
-  # https://github.com/jagregory/cognito-local  
+  # https://github.com/christhomas/cognito-local  
   cognito:
     image: ghcr.io/christhomas/cognito-local:latest
     networks:
@@ -70,6 +70,8 @@ services:
       - VIRTUAL_PORT=9229
       - DEBUG=1
 
+  # Local AWS SSM Implementation
+  # https://github.com/christhomas/ssm-local  
   ssm:
     image: ghcr.io/christhomas/ssm-local:latest
     networks:
