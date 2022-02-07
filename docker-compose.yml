@@ -60,15 +60,27 @@ services:
   # Local AWS Cognito Implementation
   # https://github.com/jagregory/cognito-local  
   cognito:
-    image: jagregory/cognito-local:latest
+    image: ghcr.io/christhomas/cognito-local:latest
     networks:
       - fakews
     volumes:
-      - $PWD/data/cognito:/app/.cognito
+      - $PWD/data/cognito:/app/data
     environment:
       - VIRTUAL_HOST=~cognito-idp.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
       - VIRTUAL_PORT=9229
       - DEBUG=1
+
+  ssm:
+    image: ghcr.io/christhomas/ssm-local:latest
+    networks:
+      - fakews
+    volumes:
+      - $PWD/data/ssm:/app/data
+    environment:
+      - VIRTUAL_HOST=~ssm.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_PORT=9230
+      - DEBUG=1
+
 
   # Official Local AWS DynamoDB Implementation
   # https://hub.docker.com/r/amazon/dynamodb-local/
