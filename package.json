@@ -1,0 +1,30 @@
+{
+    "name": "fakews",
+    "description": "A set of Fake AWS Services which are useful for local development",
+    "license": "MIT",
+    "docker-dev-tools": {
+        "scripts": {
+            "start-s3": "docker compose up -d s3",
+            "start-s3-console": "docker compose up -d s3-console",
+            "start-cognito": "docker compose up -d cognito",
+            "start-ssm": "docker compose up -d ssm",
+            "start-dynamodb": "docker compose up -d dynamodb",
+            "stop-s3": "docker compose stop s3",
+            "stop-s3-console": "docker compose stop s3-console",
+            "stop-cognito": "docker compose stop cognito",
+            "stop-ssm": "docker compose stop ssm",
+            "stop-dynamodb": "docker compose stop dynamodb"
+        },
+
+        "dependencies": {
+            "fakews": {
+                "group": "fakews",
+                "repo": false,
+                "scripts": {
+                    "start-s3-console": "start-s3",
+                    "stop-s3": "stop-s3-console"
+                }
+            }
+        }
+    }
+}
