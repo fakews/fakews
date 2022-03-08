@@ -41,8 +41,8 @@ services:
     environment:
       - VIRTUAL_HOST=~^(|[a-z0-9\-]+\.)s3.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
       - VIRTUAL_PORT=9000
-      - MINIO_ROOT_USER=fakewsrootuser
-      - MINIO_ROOT_PASSWORD=fakewsrootpassword
+      - MINIO_ROOT_USER=mock1234
+      - MINIO_ROOT_PASSWORD=mock1234
       - MINIO_HTTP_TRACE=true
 
   # The GUI Console for the Minio S3 Implementation 
@@ -55,6 +55,7 @@ services:
       - fakews
     environment:
       - VIRTUAL_HOST=minio.aws.develop
+      - VIRTUAL_PORT=9090
       - CONSOLE_MINIO_SERVER=http://s3.eu-west-1.aws.develop
 
   # Local AWS Cognito Implementation
