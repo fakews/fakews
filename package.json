@@ -4,6 +4,7 @@
     "license": "MIT",
     "docker-dev-tools": {
         "scripts": {
+            "logs": "docker compose logs -f",
             "start-s3": "docker compose up -d s3",
             "start-s3-console": "docker compose up -d s3-console",
             "start-cognito": "docker compose up -d cognito",
@@ -13,7 +14,11 @@
             "stop-s3-console": "docker compose stop s3-console",
             "stop-cognito": "docker compose stop cognito",
             "stop-ssm": "docker compose stop ssm",
-            "stop-dynamodb": "docker compose stop dynamodb"
+            "stop-dynamodb": "docker compose stop dynamodb",
+            "s3": "export -p $(./bin/aws-creds mock) && aws --endpoint=http://s3.eu-west-1.aws.develop s3",
+            "s3api": "export -p $(./bin/aws-creds mock) && aws --endpoint=http://s3.eu-west-1.aws.develop s3api",
+            "ssm": "export -p $(./bin/aws-creds mock) && aws --endpoint=http://ssm.eu-west-1.aws.develop ssm",
+            "cognito": "export -p $(./bin/aws-creds mock) && aws --endpoint=http://cognito-idp.eu-west-1.aws.develop cognito-idp"
         },
 
         "dependencies": {

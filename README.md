@@ -5,6 +5,22 @@ This project is a collection is mock services which provide similar functionalit
 
 It's not guaranteed in any way that the services here are 100% compatible with AWS. Most likely corner cases and probably in mocked services from moto, things might succeed which on the real AWS wouldn't work. This is after all just a mock system and you have to realise there are limitations to it's abilities.
 
+## AWS Credentials
+For everything to work automatically without having to tamper with your local system, a minimum of a mocked set of credentials must be provided for local aws services. It's a good idea to standardise on a set of credentials which don't mention names, projects, or companies. But something totally generic.
+
+Please create in the `$HOME/.aws/credentials` file, a new section with the following text
+```
+[mock]
+aws_access_key_id = mock1234
+aws_secret_access_key = mock1234
+```
+
+These credentials are generic, safe, and 99.99% sure won't interfere with any other credentials that might be installed. It also makes them perfect for using by other AWS projects which might be running locally.
+
+It is possible to customise these values, but realise that customising these values makes a lot of automatic functionality stop working unless they are consistently changed in all places that they are used and it's not really feasible to write instructions on where to change all of these values. So if the developer wishes to take on this maintenance burden. They must do it alone and manage all the consequences of all the potential misconfigurations. 
+
+Advice: leave the defaults alone unless you have a good reason to change them
+
 ## FakeWS Amazon Console
 
 There is a small user interface letting you inspect various aws components created and maintained. But it's extremely limited and it's mainly for inspecting data and not doing anything fancy.
