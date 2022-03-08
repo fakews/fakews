@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+
+dir=$(realpath $(dirname $0))
+
+function get_profiles ()
+{
+    profile_list=$(aws configure list-profiles)
+    >&2 echo "${profile_list}"
+}
+
+function list_profiles ()
+{
+    >&2 echo "Available Profiles:"
+    get_profiles
+}
+
+function profile_missing ()
+{
+    echo "First parameter must be the name of the profile from the config file";
+    list_profiles
+    exit 1
+}
+
+function is_profile ()
+{
+    [ ! -z "$(get_profiles 2>&1 | grep -Fx "$1")" ] && echo "yes"
+}
+
+[ ! -z "$1" ] && profile=$1 || profile_missing
+[ ! -z "$2" ] && session_name=$2
+[ -z "$(command -v jq)" ] && echo "The 'jq' tool must be installed" && exit 1
+
+# obtain a list of aws profiles and see whether the profile requested is one of them
+if [ -z "$(is_profile ${profile})" ]; then
+    # This is a cool shell trick, the >&2 at the beginning here means it'll output to stderr
+    # But not to stdout, meaning you can output to the terminal without scripts reading
+    # the data automatically as output. Useful when you want to output text, but not text
+    # that will be interpreted by scripts which parse stdout.
+    >&2 echo "AWS Profile \"${profile}\" was not found, please choose one from the following list and try again"
+    list_profiles
+
+    echo AWS_CREDS=failed
+    exit 1
+else
+    session_name=awscli_ddt_${profile/-/_}_${session_name:-default}
+
+    # Obtain, if any, the role_arn for aws to execute as
+    role_arn=$(aws configure get role_arn --profile ${profile})
+
+    if [ ! -z "${role_arn}" ]; then
+        # If there is a role_arn, we can use it to assume-role, extract params and echo them
+        aws_creds=$(aws sts assume-role --role-arn ${role_arn} --profile ${profile} --role-session-name=${session_name})
+
+        echo AWS_ROLE_ARN=${role_arn}
+        echo AWS_ACCESS_KEY_ID=$(echo ${aws_creds} | jq -r .Credentials.AccessKeyId)
+        echo AWS_SECRET_ACCESS_KEY=$(echo ${aws_creds} | jq -r .Credentials.SecretAccessKey)
+        echo AWS_SESSION_TOKEN=$(echo ${aws_creds} | jq -r .Credentials.SessionToken)
+    else
+        # There was no role_arn, so that means we just extract the key/secret and echo them
+        echo AWS_ACCESS_KEY_ID=$(aws configure get aws_access_key_id --profile ${profile})
+        echo AWS_SECRET_ACCESS_KEY=$(aws configure get aws_secret_access_key --profile ${profile})
+    fi
+
+    echo AWS_CREDS=success
+    exit 0
+fi
