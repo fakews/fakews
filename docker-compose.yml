@@ -33,7 +33,7 @@ services:
   # https://github.com/minio/minio
   s3:
     image: minio/minio:latest
-    command: server /data --json
+    command: server /data --json --address 0.0.0.0:9000
     networks:
       - fakews
     volumes:
