@@ -59,9 +59,9 @@ services:
       - CONSOLE_MINIO_SERVER=http://s3.eu-west-1.aws.develop
 
   # Local AWS Cognito Implementation
-  # https://github.com/christhomas/cognito-local  
+  # https://github.com/antimatter-studios/cognito-local  
   cognito:
-    image: ghcr.io/christhomas/cognito-local:latest
+    image: ghcr.io/antimatter-studios/cognito-local:latest
     networks:
       - fakews
     volumes:
@@ -72,9 +72,9 @@ services:
       - DEBUG=1
 
   # Local AWS SSM Implementation
-  # https://github.com/christhomas/ssm-local  
+  # https://github.com/antimatter-studios/ssm-local  
   ssm:
-    image: ghcr.io/christhomas/ssm-local:latest
+    image: ghcr.io/antimatter-studios/ssm-local:latest
     networks:
       - fakews
     volumes:
