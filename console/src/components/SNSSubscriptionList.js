@@ -7,9 +7,7 @@ import {connect} from 'react-redux';
 import {getSNSSubscriptionList} from '../actions/sns';
 
 class SNSSubscriptionList extends Component {
-    constructor(props) {
-        super(props);
-
+    componentDidMount() {
         this.props.getSNSSubscriptionList();
     }
 

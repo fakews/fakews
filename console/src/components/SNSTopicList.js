@@ -7,9 +7,7 @@ import {connect} from 'react-redux';
 import {getSNSTopicList} from '../actions/sns';
 
 class SNSTopicList extends Component {
-    constructor(props) {
-        super(props);
-
+    componentDidMount() {
         this.props.getSNSTopicList();
     }
 

@@ -7,9 +7,7 @@ import {connect} from 'react-redux';
 import {getDynamoDBList} from '../actions/dynamodb';
 
 class DynamoDBList extends Component {
-    constructor(props) {
-        super(props);
-
+    componentDidMount() {
         this.props.getDynamoDBList();
     }
 

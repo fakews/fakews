@@ -1,26 +1,35 @@
-export default (state = {}, action) => {
-    let copy = Object.assign({}, state);
+const initialState = {
+    topics: { count: 0, list: [] },
+    subscriptions: { count: 0, list: [] },
+};
 
+export default (state = initialState, action) => {
     switch (action.type) {
         case 'GET_SNS_TOPICS_COUNT':
-            copy.topics.count = action.payload;
-            break;
+            return {
+                ...state,
+                topics: { ...state.topics, count: action.payload },
+            };
 
         case 'GET_SNS_TOPICS_LIST':
-            copy.topics.list = action.payload;
-            break;
+            return {
+                ...state,
+                topics: { ...state.topics, list: action.payload },
+            };
 
         case 'GET_SNS_SUBSCRIPTIONS_COUNT':
-            copy.subscriptions.count = action.payload;
-            break;
+            return {
+                ...state,
+                subscriptions: { ...state.subscriptions, count: action.payload },
+            };
 
         case 'GET_SNS_SUBSCRIPTIONS_LIST':
-            copy.subscriptions.list = action.payload;
-            break;
+            return {
+                ...state,
+                subscriptions: { ...state.subscriptions, list: action.payload },
+            };
 
         default:
             return state;
     }
-
-    return copy;
-}
+};

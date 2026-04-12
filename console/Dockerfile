@@ -1,10 +1,10 @@
-## Build application
-FROM node:16 as build
-COPY . /app
+FROM node:18 AS build
 WORKDIR /app
-RUN yarn install && yarn build
+COPY package.json yarn.lock* config-overrides.js ./
+RUN yarn install
+COPY . .
+RUN yarn build
 
-## Run application
-FROM nginx as runtime
+FROM nginx:alpine AS runtime
 COPY --from=build /app/build /usr/share/nginx/html
 EXPOSE 80

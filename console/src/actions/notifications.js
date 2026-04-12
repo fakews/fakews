@@ -1,15 +1,3 @@
-// import RestClient from "../lib/RestClient";
-
-export const getNotificationList = () => dispatch => {
-    // RestClient('dynamodb', 'eu-west-1', 'list-tables').then(r => {
-    //     dispatch({
-    //         type: 'GET_DYNAMODB_COUNT',
-    //         payload: r.data.TableNames.length,
-    //     });
-    //
-    //     dispatch({
-    //         type: 'GET_DYNAMODB_LIST',
-    //         payload: r.data.TableNames,
-    //     })
-    // });
-};
+// Notifications are not yet implemented
+// This is a placeholder for future notification support
+export const getNotificationList = () => () => {};

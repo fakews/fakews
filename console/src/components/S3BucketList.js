@@ -7,9 +7,7 @@ import {connect} from 'react-redux';
 import {getS3BucketList} from '../actions/s3';
 
 class S3BucketList extends Component {
-    constructor(props) {
-        super(props);
-
+    componentDidMount() {
         this.props.getS3BucketList();
     }
 
@@ -51,8 +49,6 @@ export default connect(
         if(typeof(state.s3.list) !== 'undefined'){
             props.list = state.s3.list;
         }
-
-        console.log({ state, props });
 
         return props;
     },

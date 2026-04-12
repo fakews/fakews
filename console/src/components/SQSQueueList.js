@@ -7,9 +7,7 @@ import {connect} from 'react-redux';
 import {getSQSQueueList} from '../actions/sqs';
 
 class SQSQueueList extends Component {
-    constructor(props) {
-        super(props);
-
+    componentDidMount() {
         this.props.getSQSQueueList();
     }
 
