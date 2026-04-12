@@ -1,0 +1,23 @@
+{
+  "name": "fakews-integration-tests",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "jest --verbose --testPathPattern=integration",
+    "test:s3": "jest --verbose integration/s3",
+    "test:dynamodb": "jest --verbose integration/dynamodb",
+    "test:sqs": "jest --verbose integration/sqs",
+    "test:iam": "jest --verbose integration/iam",
+    "test:api": "jest --verbose integration/console-api"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.496.0",
+    "axios": "^0.25.0"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  },
+  "jest": {
+    "testTimeout": 30000
+  }
+}
