@@ -1,163 +1,169 @@
-version: "3"
-
 networks:
   fakews:
     name: ${FAKEWS_NETWORK:-fakews}
 
+x-common: &common
+  restart: unless-stopped
+  networks:
+    - fakews
+
 services:
   console:
+    <<: *common
     image: christhomas/fakews-console:latest
     build:
       context: console
       dockerfile: Dockerfile
     depends_on:
-      - console-api
-    networks:
-      - fakews
+      console-api:
+        condition: service_started
+    ports:
+      - "${CONSOLE_PORT:-3000}:80"
     environment:
-      - VIRTUAL_HOST=console.aws.develop
-      - CONSOLE_API=http://console-api.aws.develop
+      - VIRTUAL_HOST=console.aws.localhost
+      - VIRTUAL_PORT=${CONSOLE_PORT:-3000}
+      - CONSOLE_API=http://console-api.aws.localhost
 
   console-api:
+    <<: *common
     image: christhomas/fakews-console-api:latest
     build:
       context: console-api
       dockerfile: Dockerfile
-    networks:
-      - fakews
+    ports:
+      - "${CONSOLE_API_PORT:-3001}:3001"
     environment:
-      - VIRTUAL_HOST=console-api.aws.develop
+      - VIRTUAL_HOST=console-api.aws.localhost
+      - DOMAIN_SUFFIX=${DOMAIN_SUFFIX:-aws.localhost}
+      - DEFAULT_REGION=${DEFAULT_REGION:-eu-west-1}
+      - PORT=3001
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/health', r => { process.exit(r.statusCode === 200 ? 0 : 1) })"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   # Local S3 using Minio S3 Implementation
-  # This is split into two parts, the api and the gui console
   # https://github.com/minio/minio
   s3:
+    <<: *common
     image: minio/minio:latest
-    command: server /data --json --address 0.0.0.0:9000
-    networks:
-      - fakews
+    command: server /data --json --address 0.0.0.0:9000 --console-address 0.0.0.0:9090
     volumes:
       - $PWD/data/s3:/data
+    ports:
+      - "${S3_API_PORT:-9000}:9000"
+      - "${S3_CONSOLE_PORT:-9090}:9090"
     environment:
-      - VIRTUAL_HOST=~^(|[a-z0-9\-]+\.)s3.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=~^(|[a-z0-9\-]+\.)s3.(eu|us|ap)-(east|west|central)-(1|2).aws.localhost
       - VIRTUAL_PORT=9000
-      - MINIO_ROOT_USER=mock1234
-      - MINIO_ROOT_PASSWORD=mock1234
-      - MINIO_HTTP_TRACE=true
-
-  # The GUI Console for the Minio S3 Implementation 
-  s3-console:
-    image: minio/console:latest
-    command: server
-    depends_on:
-      - s3
-    networks:
-      - fakews
-    environment:
-      - VIRTUAL_HOST=minio.aws.develop
-      - VIRTUAL_PORT=9090
-      - CONSOLE_MINIO_SERVER=http://s3.eu-west-1.aws.develop
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER:-mock1234}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD:-mock1234}
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   # Local AWS Cognito Implementation
-  # https://github.com/antimatter-studios/cognito-local  
+  # https://github.com/antimatter-studios/cognito-local
   cognito:
+    <<: *common
     image: ghcr.io/antimatter-studios/cognito-local:latest
-    networks:
-      - fakews
     volumes:
       - $PWD/data/cognito:/app/data
+    ports:
+      - "${COGNITO_PORT:-9229}:9229"
     environment:
-      - VIRTUAL_HOST=~cognito-idp.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=~cognito-idp.(eu|us|ap)-(east|west|central)-(1|2).aws.localhost
       - VIRTUAL_PORT=9229
       - DEBUG=1
 
   # Local AWS SSM Implementation
-  # https://github.com/antimatter-studios/ssm-local  
+  # https://github.com/antimatter-studios/ssm-local
   ssm:
+    <<: *common
     image: ghcr.io/antimatter-studios/ssm-local:latest
-    networks:
-      - fakews
     volumes:
       - $PWD/data/ssm:/app/data
+    ports:
+      - "${SSM_PORT:-9230}:9230"
     environment:
-      - VIRTUAL_HOST=~ssm.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=~ssm.(eu|us|ap)-(east|west|central)-(1|2).aws.localhost
       - VIRTUAL_PORT=9230
       - DEBUG=1
-
 
   # Official Local AWS DynamoDB Implementation
   # https://hub.docker.com/r/amazon/dynamodb-local/
   dynamodb:
+    <<: *common
     image: amazon/dynamodb-local
-    networks:
-      - fakews
+    ports:
+      - "${DYNAMODB_PORT:-8000}:8000"
     environment:
-      - VIRTUAL_HOST=~^dynamodb.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=~^dynamodb.(eu|us|ap)-(east|west|central)-(1|2).aws.localhost
       - VIRTUAL_PORT=8000
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8000/shell/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   # https://github.com/s12v/sns
   sns:
+    <<: *common
     image: s12v/sns
-    networks:
-      - fakews
     volumes:
       - $PWD/data/sns:/etc/sns
+    ports:
+      - "${SNS_PORT:-9911}:9911"
     environment:
-      - VIRTUAL_HOST=~^sns.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=~^sns.(eu|us|ap)-(east|west|central)-(1|2).aws.localhost
       - VIRTUAL_PORT=9911
 
   # https://github.com/softwaremill/elasticmq
   sqs:
+    <<: *common
     image: softwaremill/elasticmq:latest
-    networks:
-      - fakews
     volumes:
       - $PWD/config/sqs/custom.conf:/opt/elasticmq.conf
+    ports:
+      - "${SQS_PORT:-9324}:9324"
+      - "${SQS_UI_PORT:-9325}:9325"
     environment:
-      - QUEUE_HOST=~^sqs.eu-west-1.aws.develop
-      - VIRTUAL_HOST=~^sqs.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - QUEUE_HOST=sqs.eu-west-1.aws.localhost
+      - VIRTUAL_HOST=~^sqs.(eu|us|ap)-(east|west|central)-(1|2).aws.localhost
       - VIRTUAL_PORT=9324
-
-#  sqs-experimental:
-#    image: softwaremill/elasticmq-native:latest
-#    networks:
-#      - backbone
-#    volumes:
-#      - $PWD/config/sqs/custom.conf:/opt/elasticmq.conf
-#    environment:
-#      - QUEUE_HOST=sqs.eu-central-1.aws.develop
-#      - VIRTUAL_HOST=~^sqs.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
-#      - VIRTUAL_PORT=9324
 
   # https://github.com/picadoh/motocker
   iam:
+    <<: *common
     image: picadoh/motocker:latest
-    networks:
-      - fakews
+    ports:
+      - "${IAM_PORT:-5050}:5000"
     environment:
-      - VIRTUAL_HOST=~^iam.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=~^iam.(eu|us|ap)-(east|west|central)-(1|2).aws.localhost
       - VIRTUAL_PORT=5000
       - MOTO_SERVICE=iam
 
   cloudwatch:
+    <<: *common
     image: motoserver/moto:latest
-    networks:
-      - fakews
+    ports:
+      - "${CLOUDWATCH_PORT:-5051}:5000"
     environment:
-      - VIRTUAL_HOST=~^cloudwatch.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=~^cloudwatch.(eu|us|ap)-(east|west|central)-(1|2).aws.localhost
       - VIRTUAL_PORT=5000
       - MOTO_SERVICE=cloudwatch
 
   logs:
+    <<: *common
     image: motoserver/moto:latest
-    networks:
-      - fakews
     depends_on:
       - cloudwatch
+    ports:
+      - "${LOGS_PORT:-5052}:5000"
     environment:
-      - VIRTUAL_HOST=~^logs.(eu|us|ap)-(east|west|central)-(1|2).aws.develop
+      - VIRTUAL_HOST=~^logs.(eu|us|ap)-(east|west|central)-(1|2).aws.localhost
       - VIRTUAL_PORT=5000
       - MOTO_SERVICE=logs
-
-  # TODO: https://github.com/lambci/docker-lambda
-  # TODO: https://medium.com/albert-franzi/accessing-s3-data-through-sql-with-presto-ddb6d4fbb99c
