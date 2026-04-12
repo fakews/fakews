@@ -1,14 +1,19 @@
 {
   "name": "fakews-console-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "aws-sdk": "^2.496.0",
     "express": "^4.17.1",
     "helmet": "^5.0.2"
   },
+  "devDependencies": {
+    "jest": "^29.0.0",
+    "supertest": "^6.3.0"
+  },
   "scripts": {
     "dev": "node server.js",
-    "prod": "NODE_ENV=production yarn run dev"
+    "prod": "NODE_ENV=production yarn run dev",
+    "test": "jest --verbose"
   }
 }
